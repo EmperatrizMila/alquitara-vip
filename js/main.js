@@ -1,5 +1,10 @@
 const USER_KEY = "alquitara_user";
 
+// ===== Supabase =====
+const SUPABASE_URL = "https://pfiiqppcziqkzofnadxl.supabase.co";
+const SUPABASE_KEY = "PEGA_AQUI_TU_PUBLISHABLE_KEY";
+const db = window.supabase ? window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY) : null;
+
 function header(active) {
   const user = JSON.parse(localStorage.getItem(USER_KEY) || "null");
   return `
@@ -77,42 +82,76 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const nav = document.getElementById("nav");
   document.getElementById("menuBtn")?.addEventListener("click", () => nav.classList.toggle("open"));
-  document.getElementById("logout")?.addEventListener("click", (e) => {
+  document.getElementById("logout")?.addEventListener("click", async (e) => {
     e.preventDefault();
+    if (db) await db.auth.signOut();
     localStorage.removeItem(USER_KEY);
     location.reload();
   });
 
   const loginForm = document.getElementById("loginForm");
   if (loginForm) {
-    loginForm.addEventListener("submit", (e) => {
+    loginForm.addEventListener("submit", async (e) => {
       e.preventDefault();
       const data = Object.fromEntries(new FormData(loginForm));
       const msg = document.getElementById("loginMsg");
-      if (!data.correo || !data.clave || data.clave.length < 4) {
-        msg.className = "msg err";
-        msg.textContent = "Ingresa un correo y una clave de al menos 4 caracteres.";
-        return;
+      const show = (cls, text) => { msg.className = "msg " + cls; msg.textContent = text; };
+      if (!db) return show("err", "No se pudo conectar con Supabase.");
+      if (!data.correo || !data.clave || data.clave.length < 6) {
+        return show("err", "Ingresa un correo y una clave de al menos 6 caracteres.");
       }
-      localStorage.setItem(USER_KEY, JSON.stringify({ nombre: data.nombre || "VIP", correo: data.correo }));
-      msg.className = "msg ok";
-      msg.textContent = "Sesión iniciada. Bienvenido a Alquitara VIP.";
+      show("ok", "Procesando...");
+      // 1) intenta ingresar; 2) si la cuenta no existe, la crea
+      let { data: res, error } = await db.auth.signInWithPassword({ email: data.correo, password: data.clave });
+      if (error) {
+        const up = await db.auth.signUp({
+          email: data.correo,
+          password: data.clave,
+          options: { data: { nombre: data.nombre || "VIP" } }
+        });
+        if (up.error) return show("err", "Error: " + up.error.message);
+        if (!up.data.session) return show("ok", "Cuenta creada. Revisa tu correo para confirmarla y luego ingresa.");
+        res = up.data;
+      }
+      const nombre = data.nombre || res.user?.user_metadata?.nombre || "VIP";
+      localStorage.setItem(USER_KEY, JSON.stringify({ nombre, correo: data.correo }));
+      show("ok", "Sesión iniciada. Bienvenido a Alquitara VIP.");
       setTimeout(() => (location.href = "index.html"), 700);
     });
   }
 
   const reserva = document.getElementById("reservaForm");
   if (reserva) {
-    reserva.addEventListener("submit", (e) => {
+    reserva.addEventListener("submit", async (e) => {
       e.preventDefault();
       const d = Object.fromEntries(new FormData(reserva));
+      const msg = document.getElementById("reservaMsg");
+      // abrir la ventana ya (antes del await) para que el navegador no bloquee WhatsApp
+      const wa = window.open("", "_blank");
+      msg.className = "msg ok";
+      msg.textContent = "Guardando tu reserva...";
+      if (db) {
+        const { error } = await db.from("reservas").insert({
+          nombre: d.nombre,
+          celular: d.celular,
+          fecha: d.fecha,
+          personas: d.personas,
+          detalle: d.detalle || null
+        });
+        if (error) {
+          wa?.close();
+          msg.className = "msg err";
+          msg.textContent = "No se pudo guardar la reserva: " + error.message;
+          return;
+        }
+      }
       const text = encodeURIComponent(
         `Hola Alquitara VIP, quiero reservar un cumpleaños.\nNombre: ${d.nombre}\nFecha: ${d.fecha}\nPersonas: ${d.personas}\nCelular: ${d.celular}\nDetalle: ${d.detalle || "-"}`
       );
-      window.open(`https://wa.me/51999999999?text=${text}`, "_blank");
-      const msg = document.getElementById("reservaMsg");
-      msg.className = "msg ok";
-      msg.textContent = "Abrimos WhatsApp para confirmar tu reserva.";
+      const url = `https://wa.me/51999999999?text=${text}`;
+      if (wa) wa.location = url; else window.open(url, "_blank");
+      msg.textContent = "Reserva guardada. Abrimos WhatsApp para confirmar.";
+      reserva.reset();
     });
   }
 });
