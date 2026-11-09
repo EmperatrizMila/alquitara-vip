@@ -2,7 +2,7 @@ const USER_KEY = "alquitara_user";
 
 // ===== Supabase =====
 const SUPABASE_URL = "https://pfiiqppcziqkzofnadxl.supabase.co";
-const SUPABASE_KEY = "PEGA_AQUI_TU_PUBLISHABLE_KEY";
+const SUPABASE_KEY = "sb_publishable_Im8TY8gHurBkW4PTlRX2rA_q30PTam8";
 const db = window.supabase ? window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY) : null;
 
 function header(active) {
