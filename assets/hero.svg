@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#3a0d73"/>
+      <stop offset="40%" stop-color="#7b1fa2"/>
+      <stop offset="100%" stop-color="#140428"/>
+    </linearGradient>
+    <pattern id="hex" width="90" height="104" patternUnits="userSpaceOnUse">
+      <polygon points="45,3 86,27 86,75 45,99 4,75 4,27" fill="#5b21b6" fill-opacity=".22" stroke="#d8b4fe" stroke-opacity=".35" stroke-width="2"/>
+    </pattern>
+  </defs>
+  <rect width="1600" height="900" fill="url(#g)"/>
+  <rect width="1600" height="900" fill="url(#hex)"/>
+  <text x="1080" y="300" text-anchor="middle" font-family="Arial Black, sans-serif" font-size="150" fill="#ff4ec8" opacity=".16">LA VIP</text>
+</svg>

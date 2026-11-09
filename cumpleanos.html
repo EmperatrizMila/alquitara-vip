@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Cumpleaños | Alquitara VIP</title>
+  <link rel="icon" href="assets/favicon.svg" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body data-page="cumpleanos">
+  <main class="page">
+    <div class="wrap grid-2">
+      <div>
+        <h1 class="page-title">Reserva tu <span>cumpleaños</span></h1>
+        <p class="lead">Celebra en Alquitara VIP: mesa, botella, animación y pista para tu grupo. Completa el formulario y te contactamos por WhatsApp.</p>
+        <div class="panel">
+          <ul>
+            <li>Paquete básico desde 8 personas</li>
+            <li>Decoración sencilla y mención en pista</li>
+            <li>Promos de botellas para el cumpleañero</li>
+            <li>Horario desde las 4:00 p.m.</li>
+          </ul>
+        </div>
+      </div>
+      <form class="panel" id="reservaForm">
+        <h3>Datos de la reserva</h3>
+        <div><label>Nombre</label><input name="nombre" required placeholder="Tu nombre" /></div>
+        <div><label>Celular</label><input name="celular" required placeholder="9xx xxx xxx" /></div>
+        <div><label>Fecha</label><input type="date" name="fecha" required /></div>
+        <div><label>Personas</label>
+          <select name="personas" required>
+            <option value="8-12">8 a 12</option>
+            <option value="13-20">13 a 20</option>
+            <option value="21+">Más de 20</option>
+          </select>
+        </div>
+        <div><label>Detalle</label><textarea name="detalle" placeholder="Hora, decoración, canción..."></textarea></div>
+        <button class="btn-gold" type="submit">Enviar por WhatsApp</button>
+        <div id="reservaMsg" class="msg"></div>
+      </form>
+    </div>
+  </main>
+  <script src="js/main.js"></script>
+</body>
+</html>

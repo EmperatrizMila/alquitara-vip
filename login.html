@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ingresar | Alquitara VIP</title>
+  <link rel="icon" href="assets/favicon.svg" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body data-page="login">
+  <main class="page">
+    <form class="panel auth" id="loginForm">
+      <h1 class="page-title" style="font-size:1.8rem">Ingresar</h1>
+      <p class="lead">Acceso de demostración para GitHub Pages (se guarda en tu navegador).</p>
+      <div><label>Nombre</label><input name="nombre" placeholder="Tu nombre" /></div>
+      <div><label>Correo</label><input type="email" name="correo" required placeholder="tucorreo@email.com" /></div>
+      <div><label>Clave</label><input type="password" name="clave" required minlength="4" placeholder="Mínimo 4 caracteres" /></div>
+      <button class="btn-gold" type="submit">Entrar</button>
+      <div id="loginMsg" class="msg"></div>
+    </form>
+  </main>
+  <script src="js/main.js"></script>
+</body>
+</html>
