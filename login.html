@@ -14,14 +14,15 @@
   <main class="page">
     <form class="panel auth" id="loginForm">
       <h1 class="page-title" style="font-size:1.8rem">Ingresar</h1>
-      <p class="lead">Acceso de demostración para GitHub Pages (se guarda en tu navegador).</p>
+      <p class="lead">Ingresa con tu correo. Si aún no tienes cuenta, se crea automáticamente.</p>
       <div><label>Nombre</label><input name="nombre" placeholder="Tu nombre" /></div>
       <div><label>Correo</label><input type="email" name="correo" required placeholder="tucorreo@email.com" /></div>
-      <div><label>Clave</label><input type="password" name="clave" required minlength="4" placeholder="Mínimo 4 caracteres" /></div>
+      <div><label>Clave</label><input type="password" name="clave" required minlength="6" placeholder="Mínimo 6 caracteres" /></div>
       <button class="btn-gold" type="submit">Entrar</button>
       <div id="loginMsg" class="msg"></div>
     </form>
   </main>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
   <script src="js/main.js"></script>
 </body>
 </html>
